@@ -32,7 +32,6 @@ jobs:
             --noconsole \
             --windowed \
             --name "Image Resizer Pro" \
-            --icon icon.icns
 
       - name: Upload built app
         uses: actions/upload-artifact@v4
