@@ -1,0 +1,41 @@
+name: Build macOS App
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build app with PyInstaller
+        run: |
+          pyinstaller app_desktop.py \
+            --onefile \
+            --noconsole \
+            --windowed \
+            --name "Image Resizer Pro" \
+            --icon icon.icns
+
+      - name: Upload built app
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-app
+          path: dist/Image\ Resizer\ Pro
